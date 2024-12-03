@@ -15,12 +15,8 @@ std::vector<Color> gradient_colors;
 
 const GLfloat Pi = 3.14159274101257324219f;
 
-int main() {
-    shape = Pentagon;
-    fill = Hardcode;
-
-    u_color = { 1, 0, 1, 1 };
-
+void changeParams()
+{
     switch (shape)
     {
     case Triangle:
@@ -32,6 +28,7 @@ int main() {
         if (fill == Gradient) gradient_colors = GenerateColors(3);
         break;
     case Fan:
+        verteces.clear();
         verteces.push_back({ 0.0f, 0.0f });
         for (GLfloat angle = 15.0f; angle <= 165.0f; angle += 30.0f)
             verteces.push_back({ cos(angle / 180.0f * Pi), sin(angle / 180.0f * Pi) });
@@ -47,7 +44,8 @@ int main() {
         if (fill == Gradient) gradient_colors = GenerateColors(3);
         break;
     case Pentagon: {
-        GLfloat startAngle = 0.0f; 
+        verteces.clear();
+        GLfloat startAngle = 0.0f;
         for (GLfloat angle = startAngle; angle < 360.0f + startAngle; angle += 72.0f)
             verteces.push_back({ cos(angle / 180.0f * Pi), sin(angle / 180.0f * Pi) });
 
@@ -56,6 +54,15 @@ int main() {
     }
     default: break;
     }
+}
+
+int main() {
+    shape = Pentagon;
+    fill = Hardcode;
+
+    u_color = { 1, 0, 1, 1 };
+
+    changeParams();
 
     sf::Window window(sf::VideoMode(600, 600), "My OpenGL window", sf::Style::Default, sf::ContextSettings(24));
     window.setVerticalSyncEnabled(true);
@@ -68,6 +75,48 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) { window.close(); break; }
             else if (event.type == sf::Event::Resized) { glViewport(0, 0, event.size.width, event.size.height); }
+            // Обработка ввода с клавиатуры
+            else if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Num1) {
+                    shape = Pentagon;
+                    changeParams();
+                    Init();
+                }
+                if (event.key.code == sf::Keyboard::Num2) {
+                    shape = Triangle;
+                    changeParams();
+                    Init();
+                }
+                if (event.key.code == sf::Keyboard::Num3) {
+                    shape = Quadrangle;
+                    changeParams();
+                    Init();
+                }
+                if (event.key.code == sf::Keyboard::Num4) {
+                    shape = Fan;
+                    changeParams();
+                    Init();
+                }
+                if (event.key.code == sf::Keyboard::Q) {
+                    fill = Hardcode;
+                    changeParams();
+                    Init();
+                }
+                if (event.key.code == sf::Keyboard::W) {
+                    fill = Uniform;
+                    changeParams();
+                    Init();
+                }
+                if (event.key.code == sf::Keyboard::E) {
+                    fill = Gradient;
+                    changeParams();
+                    Init();
+                }
+                else if (event.key.code == sf::Keyboard::Escape) {
+                    std::cout << "Выход из программы\n";
+                    window.close();
+                }
+            }
         }
         if (!window.isOpen()) continue;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

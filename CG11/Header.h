@@ -88,6 +88,8 @@ const char* GradientFragShaderSource = R"(
  }
 )";
 
+
+void changeParams();
 void checkOpenGLerror();
 void ShaderLog(unsigned int);
 void InitVBO();
