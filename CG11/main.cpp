@@ -19,7 +19,7 @@ int main() {
     shape = Pentagon;
     fill = Hardcode;
 
-    u_color = { 0, 0, 1, 1 };
+    u_color = { 1, 0, 1, 1 };
 
     switch (shape)
     {
@@ -39,19 +39,21 @@ int main() {
         break;
     case Quadrangle:
         verteces = {
-            { -1.0f, 1.0f },
-            { 0.0f, 1.0f },
-            { 1.0f, -1.0f },
-            { 0.0f, -1.0f }
+            { -0.5f, -0.5f },
+            { -0.5f, 0.5f },
+            { 0.5f, 0.5f },
+            { 0.5f, -0.5f }
         };
         if (fill == Gradient) gradient_colors = GenerateColors(3);
         break;
-    case Pentagon:
-        verteces.push_back({ 0.0f, 0.0f });
-        for (GLfloat angle = 0.0f; angle <= 360.0f; angle += 72.0f)
+    case Pentagon: {
+        GLfloat startAngle = 0.0f; 
+        for (GLfloat angle = startAngle; angle < 360.0f + startAngle; angle += 72.0f)
             verteces.push_back({ cos(angle / 180.0f * Pi), sin(angle / 180.0f * Pi) });
+
         if (fill == Gradient) gradient_colors = GenerateColors(5);
         break;
+    }
     default: break;
     }
 

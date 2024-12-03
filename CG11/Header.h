@@ -66,7 +66,7 @@ const char* FragShaderSource = R"(
  #version 330 core
  out vec4 color;
  void main() {
-    color = vec4(0, 1, 0, 1);
+    color = vec4(1, 1, 0, 1);
  }
 )";
 
